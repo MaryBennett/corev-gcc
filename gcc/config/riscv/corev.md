@@ -516,7 +516,7 @@
 (define_insn "riscv_cv_alu_clip"
   [(set (match_operand:SI 0 "register_operand" "=r,r")
    (unspec:SI [(match_operand:SI 1 "register_operand" "r,r")
-               (match_operand:SI 2 "immediate_register_operand" "CVP2,r")]
+               (match_operand:SI 2 "immediate_register_operand" "CV_alu_pow2,r")]
     UNSPEC_CV_ALU_CLIP))]
 
   "TARGET_XCVALU && !TARGET_64BIT"
@@ -529,7 +529,7 @@
 (define_insn "riscv_cv_alu_clipu"
   [(set (match_operand:SI 0 "register_operand" "=r,r")
    (unspec:SI [(match_operand:SI 1 "register_operand" "r,r")
-               (match_operand:SI 2 "immediate_register_operand" "CVP2,r")]
+               (match_operand:SI 2 "immediate_register_operand" "CV_alu_pow2,r")]
     UNSPEC_CV_ALU_CLIPU))]
 
   "TARGET_XCVALU && !TARGET_64BIT"
@@ -706,3 +706,17 @@
 
   [(set_attr "type" "load")
   (set_attr "mode" "SI")])
+
+;; XCVBI Builtins
+(define_insn "cv_branch<mode>"
+  [(set (pc)
+	(if_then_else
+	 (match_operator 1 "equality_operator"
+			 [(match_operand:X 2 "register_operand" "r")
+			  (match_operand:X 3 "const_int5s_operand" "CV_bi_sign5")])
+	 (label_ref (match_operand 0 "" ""))
+	 (pc)))]
+  "TARGET_XCVBI"
+  "cv.b%C1imm\t%2,%3,%0"
+  [(set_attr "type" "branch")
+   (set_attr "mode" "none")])
