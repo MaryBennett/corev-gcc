@@ -2572,6 +2572,9 @@ Test system has support for the CORE-V SIMD extension.
 @item cv_bi
 Test system has support for the CORE-V BI extension.
 
+@item cv_mem
+Test system has support for the CORE-V MEM extension.
+
 @end table
 
 @subsubsection Other hardware attributes
